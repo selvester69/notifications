@@ -63,4 +63,43 @@ The system consumes events from two main Kafka topics:
 
 Each service exposes its own APIs (documented in OpenAPI) and interacts through REST, Kafka events, and internal HTTP calls.
 
+---
+
+## 🚀 Getting Started with Docker Compose
+
+This project is fully containerized using Docker and can be orchestrated with Docker Compose. This allows you to spin up the entire application stack, including all microservices, databases, and messaging queues, with a single command.
+
+### Prerequisites
+
+*   Docker
+*   Docker Compose
+
+### Building and Running the Application
+
+1.  **Build the Docker images for all services:**
+
+    ```bash
+    docker-compose build
+    ```
+
+2.  **Start the application stack:**
+
+    ```bash
+    docker-compose up
+    ```
+
+    This command will start all the services in the background. You can view the logs for all services using:
+
+    ```bash
+    docker-compose logs -f
+    ```
+
+3.  **Stopping the Application**
+
+    To stop all the running services, use:
+
+    ```bash
+    docker-compose down
+    ```
+
 > Generated on 2025-08-02 17:03:30

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-processor-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: event-processor-service
+  template:
+    metadata:
+      labels:
+        app: event-processor-service
+    spec:
+      containers:
+        - name: event-processor-service
+          image: <dockerhub-user>/event-processor-service:<tag>
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: event-processor-service-config

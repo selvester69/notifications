@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-preference-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-preference-service
+  template:
+    metadata:
+      labels:
+        app: user-preference-service
+    spec:
+      containers:
+        - name: user-preference-service
+          image: <dockerhub-user>/user-preference-service:<tag>
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: user-preference-service-config

@@ -1,0 +1,9 @@
+target/
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml
+.gitignore
+Dockerfile
+.idea/
+.vscode/

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: orchestrator-service
+  template:
+    metadata:
+      labels:
+        app: orchestrator-service
+    spec:
+      containers:
+        - name: orchestrator-service
+          image: <dockerhub-user>/orchestrator-service:<tag>
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: orchestrator-service-config
