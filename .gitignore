@@ -1,0 +1,60 @@
+# Java
+*.class
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Mac
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# OS generated files
+.DS_Store
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Specific to Spring Boot
+/src/main/resources/application*.properties
+/src/main/resources/application*.yml
+/src/main/resources/application*.yaml
+/src/test/resources/application*.properties
+/src/test/resources/application*.yml
+/src/test/resources/application*.yaml
+
+# A common convention is to not commit the .vscode directory, but to allow
+# users to share extensions and debug configurations.
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
