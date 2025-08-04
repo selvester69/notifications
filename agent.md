@@ -1,6 +1,7 @@
-Here’s how the **Non-Functional Requirements (NFRs)** can be **converted into actionable agent instructions** for each microservice or infrastructure component in your Notification Service system:
+# Non-Functional Requirements (NFRs)
 
----
+Yes can be **converted into actionable agent instructions** for each microservice or infrastructure component in your Notification Service system
+
 
 ## 🤖 Agent Instructions Derived from Non-Functional Requirements (NFRs)
 
@@ -63,14 +64,15 @@ Here’s how the **Non-Functional Requirements (NFRs)** can be **converted into 
 * Automate backups of DBs and Kafka logs with daily snapshots and WAL archiving.
 * Tag and monitor resource utilization for proactive **autoscaling and cost monitoring**.
 
-# Next Step
+### Next Step
+
 Understood. Here's a **Kubernetes Deployment Guide** with **agent-style instructions** instead of raw implementation, so your agents (or team members) can execute the required steps systematically.
 
 ---
 
 # 🧭 Kubernetes Deployment Guide – Agent Instructions
 
-## 🎯 Objective:
+## 🎯 Objective
 
 Deploy each microservice of the Notification System as a Docker container inside a Kubernetes cluster with autoscaling, logging, and observability support.
 
@@ -78,7 +80,7 @@ Deploy each microservice of the Notification System as a Docker container inside
 
 ## 🛠️ 1. Dockerization (Per Microservice)
 
-### ✅ Instructions for Agent:
+### ✅ Instructions for Agent
 
 1. **Create a `Dockerfile`** for each microservice under its root directory.
 2. Base it on an appropriate image (e.g., `openjdk:17`, `node:18`, etc. depending on tech stack).
@@ -106,7 +108,7 @@ A tested `Dockerfile` per service:
 
 ## ☸️ 2. Kubernetes Manifest Preparation
 
-### ✅ Instructions for Agent:
+### ✅ Instructions for Agent
 
 1. For each microservice, prepare:
 
@@ -123,7 +125,7 @@ A tested `Dockerfile` per service:
 
 3. Place manifests under a version-controlled folder:
 
-   ```
+   ```text
    /k8s/
      └── template-service/
          ├── deployment.yaml
@@ -135,7 +137,7 @@ A tested `Dockerfile` per service:
 
 ## 🚀 3. Deployment to Kubernetes Cluster
 
-### ✅ Instructions for Agent:
+### ✅ Instructions for Agent
 
 <!-- 1. Ensure a Kubernetes cluster is set up (e.g., EKS, GKE, AKS, Minikube).
 2. Use `kubectl apply -f` or a GitOps tool (e.g., ArgoCD, Flux) to deploy manifests.
@@ -149,9 +151,9 @@ A tested `Dockerfile` per service:
 
 ## 📈 4. Observability & Monitoring
 
-### ✅ Instructions for Agent:
+### ✅ Instructions for Agent
 
-1. Install **Prometheus** and **Grafana** via Helm charts.
+1. Install **Prometheus** and **Grafana** via Helm charts on docker container .
 2. Ensure each service exposes `/actuator/metrics` or Prometheus-compatible endpoint.
 3. Configure Prometheus to scrape metrics from these endpoints.
 4. Set up Grafana dashboards for:
@@ -164,7 +166,7 @@ A tested `Dockerfile` per service:
 
 ## 🔐 5. Security & Access
 
-### ✅ Instructions for Agent:
+### ✅ Instructions for Agent
 
 1. Expose APIs only through **Ingress Gateway** with HTTPS enabled.
 2. Enable **JWT Authentication** middleware in gateway or in service layer.
@@ -329,5 +331,3 @@ For each of the following services:
 | Autoscaling Configured     | HorizontalPodAutoscaler per service         |
 | Monitoring Enabled         | (Optional) Add Prometheus annotations       |
 | ConfigMaps or Secrets Used | For externalized configs                    |
-
-

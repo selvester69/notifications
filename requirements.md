@@ -1,13 +1,14 @@
+# Notification Service at Scale
+
 Designing a **Notification Service at Scale** requires careful planning around both functional and non-functional requirements. Below are the **functional requirements** typically involved in such a system:
 
 ---
 
-### ✅ **Core Functional Requirements**
+## ✅ **Core Functional Requirements**
 
 1. **Send Notifications**
 
    * Send notifications to users via multiple channels:
-
      * Email
      * SMS
      * Push (mobile, web)
@@ -15,23 +16,18 @@ Designing a **Notification Service at Scale** requires careful planning around b
      * WhatsApp (if applicable)
 
 2. **Multi-Channel Support**
-
    * Ability to configure and send a notification via one or more channels based on:
-
      * User preferences
      * Notification type
      * Fallback strategy (e.g., SMS if push fails)
 
 3. **Notification Templates**
-
    * Support for creating and managing templates with placeholders
    * Personalization using user data
    * Versioning of templates
 
 4. **User Preferences Management**
-
    * Users can opt-in/out of:
-
      * Certain channels (e.g., email only)
      * Certain categories (e.g., marketing vs transactional)
      * Specific times for non-urgent notifications
@@ -111,7 +107,7 @@ Designing a **Notification Service at Scale** requires careful planning around b
    * Register/unregister device tokens
    * Handle invalid/expired tokens
 
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Great! Let’s dive into these areas one by one. We'll start with the **Tech Stack and Component Diagram**, then move on to the **Database Schema**, **Sample API Contract**, and finally the **Event-Driven Architecture Design**.
 
 ---
@@ -121,7 +117,7 @@ Great! Let’s dive into these areas one by one. We'll start with the **Tech Sta
 ### ✅ **Recommended Tech Stack (Cloud-Agnostic)**
 
 | Layer/Component        | Suggested Technology Options                                              |
-| ---------------------- | ------------------------------------------------------------------------- |
+| ---------------------- | ---***---***---***---***---***---***------- |
 | API Gateway            | NGINX, Kong, AWS API Gateway, Azure API Management                        |
 | Backend Service        | Node.js / Java / Go / Python (Spring Boot is solid for Java)              |
 | Message Queue          | Apache Kafka / RabbitMQ / AWS SQS / GCP Pub/Sub                           |
@@ -138,7 +134,7 @@ Great! Let’s dive into these areas one by one. We'll start with the **Tech Sta
 
 ### ✅ **High-Level Component Diagram**
 
-```
+```text
                         +--------------------+
                         |     Client Apps    |
                         | (Web, Mobile, APIs)|
@@ -186,9 +182,8 @@ Great! Let’s dive into these areas one by one. We'll start with the **Tech Sta
 
 ```
 
+---***---***---***---***---***---***
 
-
-------------------------------------------------------------------
 Perfect — let's now dive into the **Database Schema** design for a scalable notification service.
 
 ---
@@ -322,8 +317,7 @@ notification_templates ───────────┬──────> n
 * Archive old `notifications` to cold storage
 * Redis can be used for rate limiting, DND flags, or token caching
 
-
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Great — now let’s move to the **Sample API Contract** for the Notification Service.
 
 ---
@@ -492,8 +486,7 @@ We'll focus on the key endpoints required for triggering, managing, and querying
 * `X-Request-ID` for traceability
 * `Authorization: Bearer <token>` for internal or secure routes
 
-
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Excellent — let’s now explore **Event-Driven Architecture Design** and then move on to implement the **OpenAPI (Swagger)** specification.
 
 ---
@@ -651,7 +644,7 @@ paths:
           description: Internal error
 ```
 
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Here is the **full OpenAPI 3.0 specification** for your Notification Service, including endpoints for:
 
 * Sending a notification (`/notifications/send`)
@@ -956,7 +949,7 @@ components:
                 format: time
 ```
 
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Perfect — now that you're transitioning into **LLD (Low-Level Design)** using **Java + Spring Boot**, let's start by listing all **Entities (JPA models)** required to support the high-level design (HDL) we've already discussed.
 
 ---
@@ -1164,7 +1157,7 @@ public class JsonConverter implements AttributeConverter<Object, String> {
 }
 ```
 
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Excellent choice — splitting into **Bounded Contexts** ensures modularity, scalability, and clear team ownership. Here's how we can split the **Notification Service** into **domain-driven bounded contexts**, each with its own microservice (or module if you're building a monolith with modular architecture).
 
 ---
@@ -1325,9 +1318,7 @@ User-Service or Order-Service
 | dispatcher-service      | Spring Boot + Kafka Consumer + 3P SDKs  |              |
 | tracking-service        | Spring Boot + Webhooks + DB             |              |
 
-
-
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Perfect — for an **LLD (Low-Level Design) Document**, we’ll stay focused on the **design specs**, not implementation code. Now that we’ve split the system into **bounded contexts**, the next step is to define, for each service:
 
 ---
@@ -1356,7 +1347,7 @@ Let’s proceed step-by-step.
 Below is a **consolidated entity list** across all microservices based on your design.
 
 | Entity Name              | Description                                                                  | Used In                 |
-| ------------------------ | ---------------------------------------------------------------------------- | ----------------------- |
+| ------------------------ | ---***---***---***---***---***---***---------- | ----------------------- |
 | **UserPreference**       | Stores user notification preferences for channels and categories             | user-preference-service |
 | **NotificationTemplate** | Defines the notification format, variables, and content per channel/language | template-service        |
 | **NotificationRequest**  | Internal representation of a notification to be processed                    | orchestrator-service    |
@@ -1377,8 +1368,8 @@ Let’s go in this order:
 5. **Dispatcher Service**
 6. **Tracking Service**
 
+---***---***---***---***---***---***
 
-------------------------------------------------------------------
 ### 🧩 1. Template Service – Low-Level Design (LLD)
 
 ---
@@ -1496,7 +1487,8 @@ DELETE /templates/{templateId}
 * Optional: Redis (to cache template reads)
 * Templating Engine: Apache Velocity / FreeMarker
 
-------------------------------------------------------------------
+---***---***---***---***---***---***
+
 ### 🧩 2. User Preference Service – Low-Level Design (LLD)
 
 ---
@@ -1619,8 +1611,8 @@ POST /preferences/bulk
 * PostgreSQL / MySQL
 * Optional Redis for caching lookups (`userId:category:channel → boolean`)
 
+---***---***---***---***---***---***
 
-------------------------------------------------------------------
 ### 🧩 3. Event Processor Service – Low-Level Design (LLD)
 
 ---
@@ -1741,8 +1733,8 @@ Process:
 * JSON Schema Validator (for event payloads)
 * Retry strategy (DLQ / backoff mechanism)
 
+---***---***---***---***---***---***
 
-------------------------------------------------------------------
 ### 🧩 4. Orchestrator Service – Low-Level Design (LLD)
 
 ---
@@ -1872,8 +1864,8 @@ GET /actuator/health
 * Dispatcher Service (for forwarding)
 * Optional: Tracing/Context propagation (Zipkin / Sleuth)
 
+---***---***---***---***---***---***
 
-------------------------------------------------------------------
 ### 🧩 5. Dispatcher Service – Low-Level Design (LLD)
 
 ---
@@ -2006,8 +1998,8 @@ Each dispatcher implements the `ChannelDispatcher` interface.
 * Circuit breakers (e.g., Resilience4j)
 * Tracking Service (to log status)
 
+---***---***---***---***---***---***
 
-------------------------------------------------------------------
 ### 🧩 6. Tracking Service – Low-Level Design (LLD)
 
 ---
@@ -2144,8 +2136,7 @@ Response:
   * Duration between send and delivery
   * Bounce or unsubscribe info
 
-
-------------------------------------------------------------------
+---***---***---***---***---***---***
 Here’s a **generic planning document** for key **cross-cutting concerns** across all six microservices of the Notification System:
 
 ---
@@ -2256,5 +2247,3 @@ Here’s a **generic planning document** for key **cross-cutting concerns** acro
 * DLQ worker picks failed message → logs error + sends alert
 * TrackingService logs `FAILED` with `errorMessage`
 * Optionally: Send fallback SMS if email fails
-
-
