@@ -1,6 +1,7 @@
 # 📉 Notification Service – Low-Level Design (LLD)
 
 ## 🧱 Microservices Covered
+
 1. Template Service
 2. User Preference Service
 3. Event Processor Service
@@ -13,6 +14,7 @@
 ## 1️⃣ Template Service
 
 ### 📦 Class Diagram (Key Entities)
+
 - `TemplateController`
 - `TemplateService`
 - `TemplateRepository`
@@ -21,6 +23,7 @@
 - `TemplateDTO`
 
 ### 📓 Data Model
+
 ```java
 @Entity
 @Table(name = "templates")
@@ -36,12 +39,14 @@ public class TemplateEntity {
 ```
 
 ### 📈 Sequence Diagram (Create Template)
+
 1. `Client` → `POST /templates`
 2. Controller parses request → DTO
 3. DTO → Entity → Persist via Repository
 4. Return 201 Created with Template ID
 
 ### 🔗 APIs
+
 ```http
 POST /templates
 GET /templates/{id}
@@ -51,6 +56,7 @@ DELETE /templates/{id}
 ```
 
 ### 📄 Sample API Request
+
 ```json
 {
   "name": "Password Reset",
@@ -66,6 +72,7 @@ DELETE /templates/{id}
 ## 2️⃣ User Preference Service
 
 ### 📦 Class Diagram (Key Entities)
+
 - `UserPreferenceController`
 - `UserPreferenceService`
 - `UserPreferenceRepository`
@@ -73,6 +80,7 @@ DELETE /templates/{id}
 - `UserPreferenceDTO`
 
 ### 📓 Data Model
+
 ```java
 @Entity
 @Table(name = "user_preferences")
@@ -87,18 +95,21 @@ public class UserPreferenceEntity {
 ```
 
 ### 📈 Sequence Diagram (Update Preferences)
+
 1. `Client` → `PUT /preferences/{userId}`
 2. Controller parses preferences
 3. Service validates + persists
 4. Return 200 OK
 
 ### 🔗 APIs
+
 ```http
 GET /preferences/{userId}
 PUT /preferences/{userId}
 ```
 
 ### 📄 Sample API Request
+
 ```json
 {
   "preferences": [
@@ -113,6 +124,7 @@ PUT /preferences/{userId}
 ## 3️⃣ Event Processor Service
 
 ### 📦 Class Diagram (Key Entities)
+
 - `EventProcessor`
 - `EventValidator`
 - `EventNormalizer`
@@ -120,6 +132,7 @@ PUT /preferences/{userId}
 - `IncomingEventMessage`
 
 ### 🧩 Event Enums
+
 ```java
 enum EventType {
   USER_REGISTERED, PASSWORD_RESET, ORDER_PLACED, ORDER_SHIPPED;
@@ -131,6 +144,7 @@ enum EventSource {
 ```
 
 ### 📓 Data Model – Optional Audit Table
+
 ```sql
 Table: event_log
 -----------------------------------
@@ -142,6 +156,7 @@ received_at  TIMESTAMP
 ```
 
 ### 📈 Sequence Diagram (Kafka → Orchestrator)
+
 ```plaintext
 [Kafka] → [Event Processor]: receives USER_REGISTERED event
 [Event Processor] → [Validator]: validate schema & payload
@@ -150,6 +165,7 @@ received_at  TIMESTAMP
 ```
 
 ### 🔗 Internal API (For Testing/Replay)
+
 ```http
 POST /events/replay
 {
@@ -162,6 +178,7 @@ POST /events/replay
 ```
 
 ### 🔄 Kafka Integration
+
 - Topics:
   - `user-events`: USER_REGISTERED, PASSWORD_RESET
   - `order-events`: ORDER_PLACED, ORDER_SHIPPED
@@ -175,6 +192,7 @@ POST /events/replay
 ## 4️⃣ Orchestrator Service
 
 ### 📦 Class Diagram
+
 - `NotificationOrchestrator`
 - `PreferenceServiceClient`
 - `TemplateServiceClient`
@@ -183,6 +201,7 @@ POST /events/replay
 - `ResolvedNotification`
 
 ### 📓 Data Model (In-Memory Only)
+
 ```java
 class NotificationRequest {
   EventType eventType;
@@ -198,6 +217,7 @@ class ResolvedNotification {
 ```
 
 ### 📈 Sequence Diagram
+
 ```plaintext
 [Event Processor] → [Orchestrator]
 [Orchestrator] → [Preference Service] → fetch user preference
@@ -206,11 +226,13 @@ class ResolvedNotification {
 ```
 
 ### 🔗 APIs
+
 ```http
 POST /notifications/trigger
 ```
 
 ### 📄 Sample Trigger Payload
+
 ```json
 {
   "eventType": "USER_REGISTERED",
@@ -226,6 +248,7 @@ POST /notifications/trigger
 ## 5️⃣ Dispatcher Service
 
 ### 📦 Class Diagram
+
 - `DispatcherController`
 - `EmailSender`
 - `SmsSender`
@@ -233,6 +256,7 @@ POST /notifications/trigger
 - `ChannelType`
 
 ### 📓 Data Model (Log Table)
+
 ```sql
 Table: delivery_log
 ---------------------------
@@ -246,6 +270,7 @@ timestamp    TIMESTAMP
 ```
 
 ### 📈 Sequence Diagram
+
 ```plaintext
 [Orchestrator] → [Dispatcher] POST /dispatch
 [Dispatcher] → [ChannelSender] (e.g., EmailSender)
@@ -254,11 +279,13 @@ Log status to DB
 ```
 
 ### 🔗 APIs
+
 ```http
 POST /dispatch
 ```
 
 ### 📄 Dispatch Payload
+
 ```json
 {
   "userId": "123",
@@ -273,11 +300,13 @@ POST /dispatch
 ## 6️⃣ Tracking Service
 
 ### 📦 Class Diagram
+
 - `TrackingController`
 - `TrackingService`
 - `TrackingRepository`
 
 ### 📓 Data Model
+
 ```sql
 Table: tracking_events
 -----------------------------
@@ -289,18 +318,21 @@ created_at TIMESTAMP
 ```
 
 ### 📈 Sequence Diagram
+
 ```plaintext
 [Dispatcher] → [Tracking Service]: send delivery + status info
 [Tracking Service] → DB: log tracking event
 ```
 
 ### 🔗 APIs
+
 ```http
 POST /track
 GET /track/{userId}
 ```
 
 ### 📄 Sample Tracking Event
+
 ```json
 {
   "event": "EMAIL_DELIVERED",
