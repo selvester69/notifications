@@ -1,8 +1,7 @@
 package com.example.userpreferenceservice;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @Service
@@ -11,6 +10,7 @@ public class UserPreferenceService {
 
     private final UserPreferenceRepository preferenceRepository;
 
+    // TODO: set default preference as email
     public UserPreference setPreference(UserPreference preference) {
         return preferenceRepository.save(preference);
     }
